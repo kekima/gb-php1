@@ -9,7 +9,7 @@
 
 <head>
 	<title>
-		<?php $title; ?>
+		<?php echo $title; ?>
 	</title>
 	<meta charset="UTF-8">
 </head>

@@ -5,25 +5,19 @@ function mathOperation($a, $b, $operation) {
 
 	case "addition":
 		return "a+b=" . ($a + $b) . "<br>";
-		break;
-	
 
 	case "subtraction": 
 		return "a-b=" . ($a - $b) . "<br>";
-		break;	
 
 	case "division": 
 		if ($b == 0) {
 			return "a/b= not possible to divide by zero!<br>";
-			break;
 		} else {
 			return "a/b=" . round($a / $b, 2) . "<br>";
-			break;
 		}	
-
+		
 	case "multiplication":
 		return "a*b=" . ($a * $b) . "<br>";
-		break;
 	}
 }
 

@@ -5,9 +5,9 @@
 echo "a = {$a}, b = {$b}<br>";
 
 if ($a >= 0 && $b >= 0) {
-	echo "a-b=".($a - $b);
+	echo "a-b=" . ($a - $b);
 } else if ($a < 0 && $b < 0) {
-	echo "a*b=".($a * $b);
+	echo "a*b=" . ($a * $b);
 } else {
-	echo "a+b=".($a + $b);
+	echo "a+b=" . ($a + $b);
 }

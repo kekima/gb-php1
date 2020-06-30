@@ -1,43 +1,67 @@
 <?php
 
-$arr = [
-    '1' => "Image added",
+$msgArr = [
+    '1' => "Image added!",
     '2' => "File upload error!",
-    '3' => "We do not allow uploading PHP files.."
+    '3' => "We do not allow uploading PHP files..",
+    '4' => "We only accept GIF, JPEG and PNG images.",
+    '5' => "Max file size of 5 MB exceeded!",
 ];
+$message = $msgArr[$_GET['message']];
 
-$message = $arr[$_GET['message']];
+define("ROOT", $_SERVER['DOCUMENT_ROOT']);
+define("IMG_BIG", ROOT . "/gallery_img/big/");
+define("IMG_SMALL", ROOT . "/gallery_img/small/");
+
+include "classSimpleImage.php";
+
 
 if (isset($_POST['load'])) {
-//    $path = "gallery_img/big/" . $_FILES['myfile']['name'];
+
+    $imageinfo = getimagesize($_FILES['image']['tmp_name']);
+
+    $path_big = IMG_BIG . $_FILES['image']['name'];
+    $path_small = IMG_SMALL . $_FILES['image']['name'];
+
 
     $blacklist = array(".php", ".phtml", ".php3", ".php4");
     foreach ($blacklist as $item) {
-     if(preg_match("/$item\$/i", $_FILES['myfile']['name'])) {
-        header("Location: /?message=3");
-      exit;
-      }
-     }
-   
-     $uploaddir = 'gallery_img/big/';
-     $uploadfile = $uploaddir . basename($_FILES['myfile']['name']);
-     
-     if (move_uploaded_file($_FILES['myfie']['tmp_name'], $uploadfile)) {
-        header("Location: /?message=1");
-    } else {
-        header("Location: /?message=2");
+        if(preg_match("/$item\$/i", $_FILES['image']['name'])) {
+            header("Location: /?message=3");
+        exit;
+        }
     }
+
+    if($imageinfo['mime'] != 'image/gif' && $imageinfo['mime'] != 'image/jpeg' && $imageinfo['mime'] != 'image/png') {
+        header("Location: /?message=4");
+        exit;
+    }
+
+    if ($_FILES['image']['size'] > 1024 * 5 * 1024) {
+        header("Location: /?message=5");
+    }
+     
+
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $path_big)) {
+
+            $image = new SimpleImage();
+            $image->load($path_big);
+            $image->resizeToWidth(150);
+            $image->save($path_small);
+            header("Location: /?message=1");
+        } else {
+            header("Location: /?message=2");
+        }
     die;
 }
 
-$imgArray = array_slice(scandir('gallery_img/big/'), 2);
-function getGallery($imgArray) {
+function getGallery($path) {
+    return array_slice(scandir(IMG_BIG), 2);
+}
 
-    foreach ($imgArray as $item) {        
-        $output .= "<a href=\"/gallery_img/big/{$item}\"><img class='pic' src=\"/gallery_img/small/{$item}\"></a>";
-    }
-    return $output;
-};
+$images = getGallery(IMG_BIG);
+
+//$output = '';
 
 ?>
 
@@ -52,11 +76,13 @@ function getGallery($imgArray) {
 </head>
 <body>
 
-<?php echo getGallery($imgArray) ?>
+<? foreach ($images as $item): ?> 
+<a href="/gallery_img/big/<?=$item?>"><img class='pic' src="/gallery_img/small/<?=$item?>"></a>
+<?endforeach;?>
 
 <br><br>
 <form method="post" enctype="multipart/form-data">
-    <input type="file" name="myfile">
+    <input type="file" name="image">
     <input type="submit" name="load" value="Upload">
 </form>
 <?=$message?>

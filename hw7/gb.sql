@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 04, 2020 at 04:32 PM
+-- Generation Time: Jul 15, 2020 at 12:05 AM
 -- Server version: 8.0.19
 -- PHP Version: 7.4.5
 
@@ -105,7 +105,7 @@ INSERT INTO `images` (`id`, `filename`, `views`) VALUES
 (1, '01.jpg', 2),
 (2, '02.jpg', 1),
 (3, '03.jpg', 1),
-(4, 'k1Aw7d0Y-xE.jpg', 86),
+(4, 'k1Aw7d0Y-xE.jpg', 87),
 (5, 'vdsF_HoD76s.jpg', 7);
 
 -- --------------------------------------------------------
@@ -169,7 +169,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `feedback`

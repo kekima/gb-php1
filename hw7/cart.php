@@ -5,15 +5,24 @@ define("IMG", "/img/");
 include ("db.php");
 
 if ($_GET['action'] == 'delete') {
+
+   
+
     $id = (int)$_GET['id'];
     //$session = session_id();
     $result = mysqli_query($db, "SELECT `session_id` FROM `cart` WHERE `id`={$id}");
-    mysqli_query($db, "DELETE FROM `cart` WHERE `cart`.`id` = {$id}");
+    mysqli_query($db, "DELETE FROM `cart` WHERE `cart`.`id` = {$id} AND session_id = '{$session}'");
     header("Location: /cart.php");
+
 }
 
 $cart = mysqli_query($db, "SELECT cart.id cart_id, goods.image, goods.id good_id, goods.name, goods.descr,
  goods.price FROM cart,goods WHERE cart.good_id=goods.id AND session_id = '{$session}'");
+
+$totalPrice = 0;
+foreach ($cart as $item) {
+    $totalPrice += $item['price'];
+}
 
 ?>
 <html lang='en'>
@@ -21,6 +30,7 @@ $cart = mysqli_query($db, "SELECT cart.id cart_id, goods.image, goods.id good_id
     <meta charset='utf-8'>
     <title>Catalog</title>
     <style>
+        .main-block {display: flex; flex-direction: row;}
         .item-block {margin: 5px; width: 210px; height: 250px; box-shadow: 0 0 5px grey; display: flex; align-items: center; justify-content: center; flex-direction: column;}
     </style>
 </head>
@@ -28,7 +38,7 @@ $cart = mysqli_query($db, "SELECT cart.id cart_id, goods.image, goods.id good_id
 <div id="main">
     <?php include "menu.php" ?>
     <div><h2>Cart</h2></div>
-    <div>
+    <div class="main-block">
     <? if ($count != 0): ?>
             <?php foreach ($cart as $item): ?>
                 <div class="item-block">
@@ -45,6 +55,7 @@ $cart = mysqli_query($db, "SELECT cart.id cart_id, goods.image, goods.id good_id
         Your cart is empty!
     <? endif; ?>
     </div>
+    <br>Total: <?= $totalPrice ?>
 </div>
 
 </body>

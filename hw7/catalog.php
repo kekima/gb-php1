@@ -19,6 +19,7 @@ $result = mysqli_query($db, "SELECT id, image, name, price FROM `goods`");
     <meta charset='utf-8'>
     <title>Catalog</title>
     <style>
+        .main-block {display: flex; flex-direction: row;}
         .item-block {margin: 5px; width: 210px; height: 250px; box-shadow: 0 0 5px grey;}
         .item-center {display: flex; align-items: center; justify-content: center; flex-direction: column;}
     </style>
@@ -27,7 +28,7 @@ $result = mysqli_query($db, "SELECT id, image, name, price FROM `goods`");
 <div id="main">
     <?php include "menu.php" ?>
     <div><h2>Catalog</h2></div>
-    <div>
+    <div class="main-block">
         <? if ($result): ?>
             <?php foreach ($result as $item): ?>
                 <div class="item-block item-center">

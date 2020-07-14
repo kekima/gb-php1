@@ -23,12 +23,16 @@ if ($_FILES['image']['size'] > 1024 * 5 * 1024) {
     header("Location: /?message=5");
 }
 
-
 if (move_uploaded_file($_FILES['image']['tmp_name'], $path_big)) {
+
+    $filename = mysqli_real_escape_string($db, $_FILES['image']['name']);
+    mysqli_query($db, "INSERT INTO `images`(`filename`) VALUES ('$filename')");
 
     $image = new SimpleImage();
     $image->load($path_big);
     $image->resizeToWidth(150);
     $image->save($path_small);
     header("Location: /?message=1");
-}
+   } else {
+       header("Location: /?message=2");
+   }
